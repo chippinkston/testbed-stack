@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+
+  web:
+    build: demo_site
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+
+  proxy:
+    build: _utils/nginx
+    ports:
+     - '80:80'
+    links:
+      - web
+      - testbed
+
+  testbed:
+    build: cucumber/js
+    ports:
+      - '2400:2400'
+    environment:
+      - TESTING_DOMAIN="demosite.dev"
+
